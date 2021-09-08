@@ -90,6 +90,7 @@
             if(this.x>(this.board.width / 2))
             {
                 this.direction=-1;
+                this.speed=this.speed+1;
             }
             else
             {
@@ -118,13 +119,18 @@
     self.Bar.prototype = {
         //funcion para subir la barra
         down: function(){
-            this.y += this.speed;
+            if(this.y<board.height-this.height)
+            {
+                this.y += this.speed;
+            }
         },
         //funcion para bajar la barra
         up: function() {    
-            this.y -= this.speed;   
-        }
-
+            if(this.y>0)
+            {
+                this.y -= this.speed;   
+            }
+        } 
     }
 })();
 
@@ -132,7 +138,7 @@
 (function (){
     //constructor
         self.BoardView = function(canvas,board) {
-        this.canvas = canvas;
+        this.canvas = canvas; 
         this.canvas.width=board.width;
         this.canvas.height=board.height;
         this.board=board;

@@ -6,12 +6,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
     <style>
+        * {
+  box-sizing: border-box;
+}
+
+/* Create three unequal columns that floats next to each other */
+.column {
+  float: left;
+  padding: 0px;
+}
+
+.left, .right {
+  width: 15%;
+}
+
+.middle {
+  width: 65%
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
         canvas{border:solid;}
     </style>
 </head>
 <body>
-    <h1>PING PONG</h1>
-    <canvas id="canvas"></canvas>
+    <div class="row">
+        <div class="column left" style="background-color:rgb(255, 255, 255);">
+            <br></br>
+        </div>
+        <div class="column middle" style="background-color:rgb(255, 255, 255);">
+            <br></br>
+            <FONT FACE="Fantasy" SIZE=10 COLOR="white">aaaaaaaaaaaa</FONT> 
+            <FONT FACE="Fantasy" SIZE=10 COLOR="black">PING PONG</FONT> 
+            <h2>Jugador 1</h2>
+
+          <canvas id="canvas"> </canvas>
+        </div>
+        <div class="column right" style="background-color:rgb(0, 255, 64);">
+          <h2>Column 3</h2>
+          <p>Some text..</p>
+        </div>
+      </div>
+
+     
+
+
     <script src="main.js"></script>
 </body>
 </html>
