@@ -1,4 +1,8 @@
+//main principal
+
+//funcion para crear el tablero
 (function (){ 
+    //contrutor del tablero
     self.Board = function(width,height) 
     {
         this.width=width;
@@ -9,7 +13,7 @@
         this.ball=null;
         this.playing=false;
     }
-
+    //contruyo el prototipo con sus metodos
     self.Board.prototype = 
     {
         get elements()
@@ -21,8 +25,9 @@
     }
 })();
 
-
+//funcion que crea la pelota
 (function(){
+    //constructor de la pelota
     self.Ball = function(x,y,radius,board){
         this.x=x;
         this.y=y;
@@ -34,38 +39,43 @@
         this.bounce_angle=0;
         this.max_bounce_angle=Math.PI/6;
         this.speed=3;
-
         board.ball=this;
         this.kind="circle";
     }    
 
+    //construyo el prototipo con sus metodos
     self.Ball.prototype ={
+        //funcion que mueve la pelota
         move: function()
         {
             this.x+=(this.speed_x*this.direction);
             this.y+=(this.speed_y);
 
+            //condicion que hace que rebote en el borde inferior
             if(this.y>(this.board.height-5))
             {
                 this.speed_y = -1*this.speed_y;
             }
-
+            //condicion que hace que rebote en el borde superior
             if(this.y<=5)
             {
                 this.speed_y = -1*this.speed_y;
             }
         },
 
+        //funcion que devuelve el diametro
         get width()
         {
             return this.radius*2;
         },
 
+        //funcion que devuelve el diametro
         get height()
         {
             return this.radius*2;
         },
 
+        //funcion que se encarga de las colisiones
         collision: function(bar)
         {
             //reacciona a la colision con una barra que recibe como parametro
@@ -75,7 +85,8 @@
 
             this.speed_y=this.speed * -Math.sin(this.bounce_angle);
             this.speed_x=this.speed * Math.cos(this.bounce_angle);
-
+            
+            //condicion que se encarga de hacer el rebote con las barras
             if(this.x>(this.board.width / 2))
             {
                 this.direction=-1;
@@ -89,7 +100,9 @@
     }
 }());
 
+//funcion de las barras
 (function(){
+    //constructor de las barras
     self.Bar = function(x,y,width,height,board) {
         this.x=x;
         this.y=y;
@@ -101,10 +114,13 @@
         this.speed = 10;     
     }
 
+    //contruyo el prototipo con sus metodos
     self.Bar.prototype = {
+        //funcion para subir la barra
         down: function(){
             this.y += this.speed;
         },
+        //funcion para bajar la barra
         up: function() {    
             this.y -= this.speed;   
         }
@@ -112,7 +128,9 @@
     }
 })();
 
+//mostrar el tablero
 (function (){
+    //constructor
         self.BoardView = function(canvas,board) {
         this.canvas = canvas;
         this.canvas.width=board.width;
@@ -120,12 +138,13 @@
         this.board=board;
         this.ctx=canvas.getContext("2d");
     }
-    
+    //protipo con su metodos
      self.BoardView.prototype = {
+         //funcion limpiar
          clean: function(){
              this.ctx.clearRect(0,0,this.board.width,this.board.height);
          },
-
+         //dibujar
          draw: function(){
              for(let i=this.board.elements.length-1;i>=0;i--)
              {
@@ -134,7 +153,7 @@
                 draw(this.ctx,el);
              };
          },
-
+         //chequear colisiones
          check_collisions: function()
          {
             for(let i = this.board.bars.length-1;i>=0;i--)
@@ -145,7 +164,8 @@
                 }
             }
          },
-
+         
+         //funcion que realiza la parte de jugabilidad
          play: function()
          {
              if(this.board.playing)
@@ -158,8 +178,8 @@
          }
      }
 
+     //funcion que revisa si hubo alguna colision
      function hit(a,b){
-         //revisa si a colisiona con b
          let hit =false;
         //colisiones horizontales
          if(b.x + b.width >=a.x && b.x < a.x+a.width)
@@ -187,13 +207,15 @@
         return hit;
      }
 
+    //funcion que dibuja los elementos en pantalla
     function draw(ctx,element){
         switch(element.kind) 
         {
+            //barras
             case "rectangle":
                 ctx.fillRect(element.x,element.y,element.width,element.height);
                 break;
-            
+            //pelota
             case "circle":
                 ctx.beginPath();
                 ctx.arc(element.x,element.y,element.radius,0,7);
@@ -206,33 +228,39 @@
     }
 })();
 
-let board = new Board(800,400);
-let bar1 = new Bar(20,100,40,100,board);
-let bar2 = new Bar(735,100,40,100,board);
-let canvas = document.getElementById('canvas');
-let board_view = new BoardView(canvas,board);
-let ball = new Ball(350,100,10,board);
+//inicializacion de variables
+let board = new Board(800,400); //tablero
+let bar1 = new Bar(20,100,40,100,board); //barra de la derecha
+let bar2 = new Bar(735,100,40,100,board); //barra de la izquierda
+let canvas = document.getElementById('canvas'); //canvas o seccion de la pagina web
+let board_view = new BoardView(canvas,board); //visualizacion del tablero
+let ball = new Ball(350,100,10,board); //pelota
 
+// se aggrega un Eventlistener para cuando se precione una tecla
 document.addEventListener("keydown",function(ev){
+    //tecla arriba
     if(ev.keyCode===38)
-    {
-        ev.preventDefault();
-        bar1.up();
-    }
-    else if(ev.keyCode ===40)
-    {
-        ev.preventDefault();
-        bar1.down();
-    }
-    else if(ev.keyCode ===87)
     {
         ev.preventDefault();
         bar2.up();
     }
-    else if(ev.keyCode ===83)
+    //tecla abajo
+    else if(ev.keyCode ===40)
     {
         ev.preventDefault();
         bar2.down();
+    }
+    //tecla s
+    else if(ev.keyCode ===87)
+    {
+        ev.preventDefault();
+        bar1.up();
+    }
+    //tecla w
+    else if(ev.keyCode ===83)
+    {
+        ev.preventDefault();
+        bar1.down();
     }
     else if(ev.keyCode ===32)
     {
@@ -241,9 +269,12 @@ document.addEventListener("keydown",function(ev){
     }
 });
 
+//se dibuja pro primera vez el tablero
 board_view.draw();
+//se actualzia el juego cada frame
 window.requestAnimationFrame(controller);
 
+//funcion que se ejecuta con cada frame
 function controller() 
 {
     board_view.play();
