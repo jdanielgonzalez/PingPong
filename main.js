@@ -14,7 +14,7 @@
         get elements()
         {
             let elements = this.bars;
-            elements.push(this.ball);
+            //elements.push(this.ball);
             return elements;
         }
     }
@@ -39,9 +39,7 @@
         up: function() {    
             this.y -= this.speed;   
         }
-        toString: function() {
-            return "x: "+this.x+
-        }
+
     }
 })();
 
@@ -55,6 +53,10 @@
     }
     
      self.BoardView.prototype = {
+         clean: function(){
+             this.ctx.clearRect(0,0,this.board.width,this.board.height);
+         },
+
          draw: function(){
              for(let i=this.board.elements.length-1;i>=0;i--)
              {
@@ -62,44 +64,57 @@
 
                 draw(this.ctx,el);
              };
+         },
+         play: function()
+         {
+             this.clean();
+             this.draw();
          }
      }
 
     function draw(ctx,element){
-        if(element!== null && element.hasOwnProperty("kind")){
-            switch(element.kind) 
-            {
-                case "rectangle":
-                    ctx.fillRect(element.x,element.y,element.width,element.height);
-                    break;
-            }       
-        }
+        switch(element.kind) 
+        {
+            case "rectangle":
+                ctx.fillRect(element.x,element.y,element.width,element.height);
+                break;
+        }       
+    
         
     }
 })();
 
-
 let board = new Board(800,400);
-let bar = new Bar(20,100,40,100,board);
-let bar1 = new Bar(735,100,40,100,board);
+let bar1 = new Bar(20,100,40,100,board);
+let bar2 = new Bar(735,100,40,100,board);
 let canvas = document.getElementById('canvas');
 let board_view = new BoardView(canvas,board);
 
+
 document.addEventListener("keydown",function(ev){
+    ev.preventDefault();
     if(ev.keyCode==38)
     {
-        bar.up();
+        bar1.up();
     }
-    else if(ev.keycode ==48)
+    else if(ev.keyCode ==40)
     {
-        bar.down();;
+        bar1.down();
+    }
+    else if(ev.keyCode ==87)
+    {
+        bar2.up();
+    }
+    else if(ev.keyCode ==83)
+    {
+        bar2.down();
     }
 });
 
-window.addEventListener("load",main);
+window.requestAnimationFrame(controller);
 
-function main() 
+function controller() 
 {
-    
-    board_view.draw();
+    board_view.play();
+    window.requestAnimationFrame(controller);
 }
