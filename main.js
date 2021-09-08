@@ -28,14 +28,19 @@
         this.height=height;
         this.board=board;
         this.board.bars.push(this);
-        this.kind = "rectangle";        
+        this.kind = "rectangle";
+        this.speed = 10;     
     }
 
     self.Bar.prototype = {
         down: function(){
-            
+            this.y += this.speed;
         },
-        up: function() {       
+        up: function() {    
+            this.y -= this.speed;   
+        }
+        toString: function() {
+            return "x: "+this.x+
         }
     }
 })();
@@ -73,14 +78,28 @@
     }
 })();
 
+
+let board = new Board(800,400);
+let bar = new Bar(20,100,40,100,board);
+let bar1 = new Bar(735,100,40,100,board);
+let canvas = document.getElementById('canvas');
+let board_view = new BoardView(canvas,board);
+
+document.addEventListener("keydown",function(ev){
+    if(ev.keyCode==38)
+    {
+        bar.up();
+    }
+    else if(ev.keycode ==48)
+    {
+        bar.down();;
+    }
+});
+
 window.addEventListener("load",main);
 
 function main() 
 {
-    let board = new Board(800,400);
-    let bar = new Bar(20,100,40,100,board);
-    let bar1 = new Bar(735,100,40,100,board);
-    let canvas = document.getElementById('canvas');
-    let board_view = new BoardView(canvas,board);
+    
     board_view.draw();
 }
