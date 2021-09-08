@@ -32,7 +32,7 @@
         this.board= board;
         this.direction=-1;
         this.bounce_angle=0;
-        this.max_bounce_angle=Math.PI/12;
+        this.max_bounce_angle=Math.PI/6;
         this.speed=3;
 
         board.ball=this;
@@ -44,6 +44,16 @@
         {
             this.x+=(this.speed_x*this.direction);
             this.y+=(this.speed_y);
+
+            if(this.y>(this.board.height-5))
+            {
+                this.speed_y = -1*this.speed_y;
+            }
+
+            if(this.y<=5)
+            {
+                this.speed_y = -1*this.speed_y;
+            }
         },
 
         get width()
@@ -74,7 +84,6 @@
             {
                 this.direction =1;
             }
-
         }
     
     }
