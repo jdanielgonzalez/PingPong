@@ -7,13 +7,14 @@
         this.game_over=false;
         this.bars=[];
         this.ball=null;
+        this.playing=false;
     }
 
     self.Board.prototype = 
     {
         get elements()
         {
-            let elements = this.bars;
+            let elements = this.bars.map(function(bar){ return bar;});
             elements.push(this.ball);
             return elements;
         }
@@ -29,9 +30,19 @@
         this.speed_y=0;
         this.speed_x=3;
         this.board= board;
+        this.direction=1;
 
         board.ball=this;
         this.kind="circle";
+    }    
+
+    self.Ball.prototype ={
+        move: function()
+        {
+            this.x+=(this.speed_x*this.direction);
+            this.y+=(this.speed_y);
+        }
+    
     }
 }());
 
@@ -82,8 +93,12 @@
          },
          play: function()
          {
-             this.clean();
-             this.draw();
+             if(this.board.playing)
+             {
+                this.clean();
+                this.draw();
+                this.board.ball.move();
+             }
          }
      }
 
@@ -114,25 +129,34 @@ let board_view = new BoardView(canvas,board);
 let ball = new Ball(350,100,10,board);
 
 document.addEventListener("keydown",function(ev){
-    ev.preventDefault();
-    if(ev.keyCode==38)
+    if(ev.keyCode===38)
     {
+        ev.preventDefault();
         bar1.up();
     }
-    else if(ev.keyCode ==40)
+    else if(ev.keyCode ===40)
     {
+        ev.preventDefault();
         bar1.down();
     }
-    else if(ev.keyCode ==87)
+    else if(ev.keyCode ===87)
     {
+        ev.preventDefault();
         bar2.up();
     }
-    else if(ev.keyCode ==83)
+    else if(ev.keyCode ===83)
     {
+        ev.preventDefault();
         bar2.down();
+    }
+    else if(ev.keyCode ===32)
+    {
+        ev.preventDefault();
+        board.playing=!board.playing;
     }
 });
 
+board_view.draw();
 window.requestAnimationFrame(controller);
 
 function controller() 
