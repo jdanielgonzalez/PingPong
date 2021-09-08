@@ -14,11 +14,26 @@
         get elements()
         {
             let elements = this.bars;
-            //elements.push(this.ball);
+            elements.push(this.ball);
             return elements;
         }
     }
 })();
+
+
+(function(){
+    self.Ball = function(x,y,radius,board){
+        this.x=x;
+        this.y=y;
+        this.radius=radius;
+        this.speed_y=0;
+        this.speed_x=3;
+        this.board= board;
+
+        board.ball=this;
+        this.kind="circle";
+    }
+}());
 
 (function(){
     self.Bar = function(x,y,width,height,board) {
@@ -78,6 +93,13 @@
             case "rectangle":
                 ctx.fillRect(element.x,element.y,element.width,element.height);
                 break;
+            
+            case "circle":
+                ctx.beginPath();
+                ctx.arc(element.x,element.y,element.radius,0,7);
+                ctx.fill();
+                ctx.closePath();
+                break;
         }       
     
         
@@ -89,7 +111,7 @@ let bar1 = new Bar(20,100,40,100,board);
 let bar2 = new Bar(735,100,40,100,board);
 let canvas = document.getElementById('canvas');
 let board_view = new BoardView(canvas,board);
-
+let ball = new Ball(350,100,10,board);
 
 document.addEventListener("keydown",function(ev){
     ev.preventDefault();
