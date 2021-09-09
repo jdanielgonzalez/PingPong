@@ -6,55 +6,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
     <style>
-        * {
-  box-sizing: border-box;
-}
 
-/* Create three unequal columns that floats next to each other */
-.column {
-  float: left;
-  padding: 0px;
-}
-
-.left, .right {
-  width: 15%;
-}
-
-.middle {
-  width: 65%
-}
-
-/* Clear floats after the columns */
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
-}
         canvas{border:solid;}
     </style>
 </head>
 <body>
+
     <div class="row">
         <div class="column left" style="background-color:rgb(255, 255, 255);">
             <br></br>
         </div>
-        <div class="column middle" style="background-color:rgb(255, 255, 255);">
-            <br></br>
-            <FONT FACE="Fantasy" SIZE=10 COLOR="white">aaaaaaaaaaaa</FONT> 
+        <div  align="center" class="column middle" style="background-color:rgb(255, 255, 255);">
             <FONT FACE="Fantasy" SIZE=10 COLOR="black">PING PONG</FONT> 
-            <h2>Jugador 1</h2>
+            
+            <h2 align="center">
+              <FONT FACE="Fantasy" SIZE=5 COLOR="black">INSTRUCCIONES</FONT> 
+            </h2>
+            <b align="center">
+              1. presiona la tecla espacio para pasuar o empezar el juego <br>
+              2. para el jugador 1 las barras se mueven con las teclas W para arriba y S para abajo <br>
+              3. para el jugador 1 las barras se mueven con las teclas arriba para arriba y abajo para abajo <br>
+              4. el primer jugador en llegar a 3 puntos gana <br>
+            </b>
+  
+            <br>
+            <FONT FACE="Fantasy" SIZE=5 COLOR="red">Jugador 1:</FONT> 
+            <FONT id="txt1" FACE="Fantasy" SIZE=5  COLOR="red" ></FONT>
+            <FONT FACE="Fantasy" SIZE=8 COLOR="white">laaaaaaaaaaaaaaaaaaaaaaa</FONT> 
+            <FONT FACE="Fantasy" SIZE=5 COLOR="blue">Jugador 2:</FONT>  
+            <FONT id="txt2" FACE="Fantasy" SIZE=5  COLOR="blue" ></FONT>
+
+            
 
           <canvas id="canvas"> </canvas>
         </div>
-        <div class="column right" style="background-color:rgb(0, 255, 64);">
-          <h2>Column 3</h2>
-          <p>Some text..</p>
-        </div>
       </div>
-
-     
-
+      
 
     <script src="main.js"></script>
 </body>
 </html>
+

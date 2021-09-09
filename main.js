@@ -39,8 +39,14 @@
         this.bounce_angle=0;
         this.max_bounce_angle=Math.PI/6;
         this.speed=3;
+        this.score1=0;
+        this.score2=0;
         board.ball=this;
         this.kind="circle";
+
+        document.getElementById("txt1").innerHTML = this.score1;
+        document.getElementById("txt2").innerHTML = this.score2;
+
     }    
 
     //construyo el prototipo con sus metodos
@@ -60,6 +66,64 @@
             if(this.y<=5)
             {
                 this.speed_y = -1*this.speed_y;
+            }
+
+            //condicion que pregunta si el jugador 1 hizo un punto
+            if(this.x>board.width)
+            {
+                bar1.y=150;
+                bar2.y=150;
+                this.x=350;
+                this.y=200;
+                this.speed_x=3;
+                this.speed_y=0;
+                this.score1+=1;
+                document.getElementById("txt1").innerHTML = this.score1;
+            }
+
+            //condicion que pregunta si el jugador 2 hizo un punto
+            if(this.x<0)
+            {
+                bar1.y=150;
+                bar2.y=150;
+                this.x=350;
+                this.y=200;
+                this.speed_x=3;
+                this.speed_y=0;
+                this.score2+=1;
+                document.getElementById("txt2").innerHTML = this.score2;
+            }
+
+            //condicion que pregunta si el jugador 1 hizo 3 puntos
+            if(this.score1===3)
+            {
+                this.x=350;
+                this.y=200;
+                this.speed_x=3;
+                this.speed_y=0;
+                this.score1=0;
+                this.score2=0;
+                this.playing=false;
+                document.getElementById("txt1").innerHTML = this.score1;
+                document.getElementById("txt2").innerHTML = this.score2;
+                alert("GANADOR JUGADOR 1")
+            }
+            
+            //condicion que pregunta si el jugador 2 hizo 3 puntos
+            if(this.score2===3)
+            {
+                bar1.y=150;
+                bar2.y=150;
+                this.x=350;
+                this.y=200;
+                this.speed_x=3;
+                this.speed_y=0;
+                this.score1=0;
+                this.score2=0;
+                this.playing=false;
+                document.getElementById("txt1").innerHTML = this.score1;
+                document.getElementById("txt2").innerHTML = this.score2;
+                alert("GANADOR JUGADOR 2")
             }
         },
 
@@ -90,7 +154,7 @@
             if(this.x>(this.board.width / 2))
             {
                 this.direction=-1;
-                this.speed=this.speed+1;
+                this.speed=this.speed+0.5;
             }
             else
             {
@@ -104,9 +168,10 @@
 //funcion de las barras
 (function(){
     //constructor de las barras
-    self.Bar = function(x,y,width,height,board) {
+    self.Bar = function(x,y,width,height,board,i) {
         this.x=x;
         this.y=y;
+        this.i=i;
         this.width=width;
         this.height=height;
         this.board=board;
@@ -155,8 +220,7 @@
              for(let i=this.board.elements.length-1;i>=0;i--)
              {
                 let el = this.board.elements[i];
-
-                draw(this.ctx,el);
+                draw(this.ctx,el,i);
              };
          },
          //chequear colisiones
@@ -214,13 +278,14 @@
      }
 
     //funcion que dibuja los elementos en pantalla
-    function draw(ctx,element){
+    function draw(ctx,element,i){
         switch(element.kind) 
         {
             //barras
             case "rectangle":
                 ctx.fillRect(element.x,element.y,element.width,element.height);
                 break;
+
             //pelota
             case "circle":
                 ctx.beginPath();
@@ -236,11 +301,11 @@
 
 //inicializacion de variables
 let board = new Board(800,400); //tablero
-let bar1 = new Bar(20,100,40,100,board); //barra de la derecha
-let bar2 = new Bar(735,100,40,100,board); //barra de la izquierda
+let bar1 = new Bar(5,150,30,100,board,1); //barra de la derecha
+let bar2 = new Bar(765,150,30,100,board,2); //barra de la izquierda
 let canvas = document.getElementById('canvas'); //canvas o seccion de la pagina web
 let board_view = new BoardView(canvas,board); //visualizacion del tablero
-let ball = new Ball(350,100,10,board); //pelota
+let ball = new Ball(405,200,10,board); //pelota
 
 // se aggrega un Eventlistener para cuando se precione una tecla
 document.addEventListener("keydown",function(ev){
